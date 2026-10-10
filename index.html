@@ -1,4 +1,4 @@
- 
+
 <!DOCTYPE html>
 <html lang="th">
 <head>
@@ -7,103 +7,242 @@
 <title>RobiBunny Shop 🐰</title>
 <style>
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:#fff5fa;color:#54394a}
-header{background:linear-gradient(135deg,#ffb8d2,#e8c9ff);text-align:center;padding:30px 15px;border-radius:0 0 28px 28px}
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#fff5fa;
+  color:#654357;
+}
+header{
+  text-align:center;
+  padding:30px 15px;
+  background:linear-gradient(135deg,#ffb8d2,#e8c9ff);
+  border-radius:0 0 28px 28px;
+}
 h1{margin:0;font-size:30px}
 header p{margin-bottom:0}
 main{max-width:850px;margin:auto;padding:18px}
-.notice{background:white;padding:15px;border-radius:16px;margin-bottom:18px;line-height:1.7}
-.categories{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
-.categories button,.order{border:0;border-radius:20px;padding:10px 15px;background:#f3d9ff;color:#54394a;font-weight:bold;cursor:pointer}
-.categories button.active,.order{background:#ff8fbb;color:white}
-.products{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:12px}
-.product{background:white;padding:15px;border-radius:18px;box-shadow:0 3px 12px #eacddd55}
-.emoji{font-size:35px}
-.product h3{margin:8px 0}
+.notice,.total{
+  background:white;
+  padding:16px;
+  border-radius:18px;
+  margin-bottom:18px;
+  line-height:1.7;
+}
+.categories{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-bottom:16px;
+}
+button{
+  border:0;
+  cursor:pointer;
+  font-size:15px;
+}
+.categories button{
+  padding:10px 14px;
+  border-radius:20px;
+  background:#f3d9ff;
+  color:#654357;
+}
+.categories button.active,.order{
+  background:#ff8fbb;
+  color:white;
+}
+.products{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
+}
+.product{
+  background:white;
+  padding:12px;
+  border-radius:18px;
+  box-shadow:0 3px 12px #eacddd55;
+  text-align:center;
+  min-width:0;
+}
+.product-image{
+  width:100%;
+  height:120px;
+  object-fit:contain;
+  border-radius:12px;
+}
+.product h3{font-size:16px;margin:8px 0}
 .price{color:#e45c98;font-weight:bold}
-.qty{display:flex;align-items:center;justify-content:center;gap:15px;margin-top:12px}
-.qty button{width:32px;height:32px;border:0;border-radius:50%;background:#ffe0ed;font-size:20px}
-.total{margin-top:20px;background:white;padding:18px;border-radius:18px}
-.total strong{font-size:23px;color:#e45c98}
-.order{width:100%;margin-top:12px;font-size:16px}
+.qty{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:18px;
+  margin-top:12px;
+}
+.qty button{
+  width:34px;height:34px;
+  border-radius:50%;
+  background:#ffe0ed;
+  font-size:20px;
+}
+.total{margin-top:20px}
+.total strong{font-size:24px;color:#e45c98}
+.order{
+  width:100%;
+  padding:13px;
+  border-radius:22px;
+  margin-top:10px;
+  font-weight:bold;
+}
 footer{text-align:center;padding:25px;font-size:13px}
+@media(max-width:360px){
+  .products{grid-template-columns:1fr}
+}
 </style>
 </head>
 <body>
 <header>
-<h1>🐰 RobiBunny Shop</h1>
-<p>Hay Day Shop 🌷 เติมฟาร์มให้น่ารักในแบบคุณ</p>
+  <h1>🐰 RobiBunny Shop</h1>
+  <p>Hay Day Shop 🌷 เติมฟาร์มให้น่ารักในแบบคุณ</p>
 </header>
+
 <main>
-<div class="notice">
-💗 <b>ยินดีต้อนรับสู่ร้าน RobiBunny</b><br>
-เลือกสินค้า กด + หรือ − เพื่อเลือกจำนวน แล้วตรวจสอบยอดรวมก่อนสั่งซื้อค่ะ<br>
-<small>หมายเหตุ: ราคาด้านล่างเป็นตัวอย่าง กรุณาตรวจสอบก่อนเปิดขายจริง</small>
-</div>
-<div class="categories" id="categories">
-<button class="active" data-cat="ทั้งหมด">ทั้งหมด</button>
-<button data-cat="เงิน">🪙 เงิน</button>
-<button data-cat="ของ">📦 ของ</button>
-<button data-cat="บริการ">🌟 บริการ</button>
-</div>
-<div class="products" id="products"></div>
-<div class="total">
-<div>จำนวนสินค้าที่เลือก: <b id="count">0</b></div>
-<p>ยอดรวมทั้งหมด</p>
-<strong id="total">0 ฿</strong>
-<button class="order" onclick="orderNow()">สั่งซื้อผ่าน LINE</button>
-<p id="msg"></p>
-</div>
+  <div class="notice">
+    💗 <b>ยินดีต้อนรับสู่ร้าน RobiBunny</b><br>
+    เลือกสินค้า กด + หรือ − เพื่อเลือกจำนวน
+    แล้วตรวจสอบยอดรวมก่อนสั่งซื้อค่ะ
+  </div>
+
+  <div class="categories">
+    <button class="active" data-cat="ทั้งหมด">ทั้งหมด</button>
+    <button data-cat="ขนม">🍪 ขนมและวัตถุดิบ</button>
+    <button data-cat="เครื่องมือ">📦 ทำลายล้าง</button>
+  </div>
+
+  <div class="products" id="products"></div>
+
+  <div class="total">
+    <div>จำนวนที่เลือก: <b id="count">0</b></div>
+    <p>ยอดรวมทั้งหมด</p>
+    <strong id="total">0 บาท</strong>
+    <button class="order" onclick="orderNow()">
+      💌 สั่งซื้อผ่าน LINE
+    </button>
+    <p id="msg"></p>
+  </div>
 </main>
+
 <footer>♡ Thank you for supporting RobiBunny Shop ♡</footer>
+
 <script>
 const items=[
-{id:1,name:"แพ็กเริ่มต้น",cat:"เงิน",emoji:"🪙",price:10},
-{id:2,name:"แพ็กยอดนิยม",cat:"เงิน",emoji:"💰",price:20},
-{id:3,name:"แพ็กพิเศษ",cat:"เงิน",emoji:"✨",price:50},
-{id:4,name:"สินค้าฟาร์ม",cat:"ของ",emoji:"🌾",price:10},
-{id:5,name:"ของตกแต่ง",cat:"ของ",emoji:"🌷",price:15},
-{id:6,name:"แพ็กของขวัญ",cat:"ของ",emoji:"🎁",price:25},
-{id:7,name:"บริการพิเศษ",cat:"บริการ",emoji:"🐣",price:20},
-{id:8,name:"บริการฟาร์ม",cat:"บริการ",emoji:"🐮",price:30}
+  {
+    id:1,
+    name:"ขนมและวัตถุดิบ",
+    cat:"ขนม",
+    image:"snack.png",
+    options:[
+      {label:"10 ชิ้น",price:4},
+      {label:"100 ชิ้น",price:20}
+    ]
+  },
+  {
+    id:2,
+    name:"ทำลายล้างและอีเต้อ",
+    cat:"เครื่องมือ",
+    image:"tools.png",
+    options:[
+      {label:"10 ชิ้น",price:2},
+      {label:"100 ชิ้น",price:15},
+      {label:"1000 ชิ้น",price:110},
+      {label:"อีเต้อ 10 ชิ้น",price:3},
+      {label:"อีเต้อ 100 ชิ้น",price:20}
+    ]
+  }
 ];
+
 const qty={};
 let category="ทั้งหมด";
+
 function render(){
-const list=items.filter(p=>category==="ทั้งหมด"||p.cat===category);
-document.getElementById("products").innerHTML=list.map(p=>`
-<div class="product">
-<div class="emoji">${p.emoji}</div>
-<h3>${p.name}</h3>
-<div>${p.cat}</div>
-<p class="price">${p.price} บาท</p>
-<div class="qty">
-<button onclick="change(${p.id},-1)">−</button>
-<b>${qty[p.id]||0}</b>
-<button onclick="change(${p.id},1)">+</button>
-</div>
-</div>`).join("");
-let count=0,total=0;
-items.forEach(p=>{count+=qty[p.id]||0;total+=(qty[p.id]||0)*p.price});
-document.getElementById("count").textContent=count;
-document.getElementById("total").textContent=total+" ฿";
+  const list=items.filter(p=>
+    category==="ทั้งหมด"||p.cat===category
+  );
+
+  document.getElementById("products").innerHTML=
+    list.map(p=>`
+      <div class="product">
+        <img class="product-image"
+          src="${p.image}"
+          alt="${p.name}"
+          onerror="this.style.display='none'">
+        <h3>${p.name}</h3>
+        <div>${p.options.map((o,i)=>`
+          <p>${o.label} — <span class="price">${o.price} บาท</span></p>
+          <div class="qty">
+            <button onclick="change('${p.id}-${i}',-1)">−</button>
+            <b>${qty[p.id+'-'+i]||0}</b>
+            <button onclick="change('${p.id}-${i}',1)">+</button>
+          </div>
+        `).join("")}</div>
+      </div>
+    `).join("");
+
+  let count=0,total=0;
+  items.forEach(p=>p.options.forEach((o,i)=>{
+    const n=qty[p.id+'-'+i]||0;
+    count+=n;
+    total+=n*o.price;
+  }));
+
+  document.getElementById("count").textContent=count;
+  document.getElementById("total").textContent=total+" บาท";
 }
-function change(id,n){qty[id]=Math.max(0,(qty[id]||0)+n);render()}
-document.querySelectorAll("[data-cat]").forEach(b=>b.addEventListener("click",()=>{
-category=b.dataset.cat;
-document.querySelectorAll("[data-cat]").forEach(x=>x.classList.toggle("active",x===b));
-render();
-}));
+
+function change(id,n){
+  qty[id]=Math.max(0,(qty[id]||0)+n);
+  render();
+}
+
+document.querySelectorAll("[data-cat]").forEach(b=>{
+  b.addEventListener("click",()=>{
+    category=b.dataset.cat;
+    document.querySelectorAll("[data-cat]").forEach(x=>
+      x.classList.toggle("active",x===b)
+    );
+    render();
+  });
+});
+
 function orderNow(){
-let chosen=items.filter(p=>qty[p.id]>0);
-if(!chosen.length){alert("กรุณาเลือกสินค้าก่อนค่ะ");return}
-let text="สวัสดีค่ะ สนใจสั่งซื้อ RobiBunny Shop 🐰%0A"+
-chosen.map(p=>p.name+" x "+qty[p.id]+" = "+(p.price*qty[p.id])+" บาท").join("%0A")+
-"%0Aยอดรวม "+chosen.reduce((s,p)=>s+p.price*qty[p.id],0)+" บาท";
-document.getElementById("msg").textContent="คัดลอกรายการสั่งซื้อได้ แล้วส่งให้ร้านทาง LINE นะคะ";
-navigator.clipboard?.writeText(decodeURIComponent(text.replace(/%0A/g,"\n"))).catch(()=>{});
-alert("รายการสั่งซื้อของคุณ:\n"+decodeURIComponent(text.replace(/%0A/g,"\n"))+"\n\nกรุณาส่งรายการนี้ให้ร้านทาง LINE ค่ะ");
+  let lines=["สวัสดีค่ะ สนใจสั่งซื้อ RobiBunny Shop 🐰"];
+  let total=0;
+
+  items.forEach(p=>p.options.forEach((o,i)=>{
+    const n=qty[p.id+'-'+i]||0;
+    if(n>0){
+      lines.push(p.name+" ("+o.label+") x "+n+
+        " = "+(n*o.price)+" บาท");
+      total+=n*o.price;
+    }
+  }));
+
+  if(total===0){
+    alert("กรุณาเลือกสินค้าก่อนค่ะ");
+    return;
+  }
+
+  lines.push("ยอดรวม "+total+" บาท");
+  const message=lines.join("\n");
+
+  document.getElementById("msg").textContent=message;
+
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(message).catch(()=>{});
+  }
+
+  alert(message+"\n\nคัดลอกรายการนี้ส่งให้ร้านทาง LINE ได้เลยค่ะ");
 }
+
 render();
 </script>
 </body>
